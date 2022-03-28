@@ -19,7 +19,7 @@ default_config = {
     "max_length": 50,
     "batch_size": 24,
     "epochs": 4,
-    "lr": 3e-6
+    "lr": 1e-6
 }
 
 project = wandb.init(project="multisimplify", entity="jemoka", config=default_config)
@@ -71,7 +71,7 @@ model.train()
 
 # We go through batches
 for e in range(EPOCHS):
-    print("Training epoch {e}!")
+    print(f"Training epoch {e}!")
 
     # shuffle
     random.shuffle(dataset_batches)
@@ -103,6 +103,5 @@ for e in range(EPOCHS):
         bar.set_description_str(f"batch: {i} | loss: {outputs.loss.cpu().item()}")
 
         if i % 10 == 0:
-            wandb.log({"loss": outputs.loss,
-                       "sample": outputs.logits})
+            wandb.log({"loss": outputs.loss})
 
