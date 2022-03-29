@@ -3,6 +3,7 @@ import pickle
 
 from tqdm import tqdm
 
+import os
 import wandb
 import torch
 import random
@@ -18,7 +19,7 @@ from transformers import BartConfig, BartTokenizer, BartForSequenceClassificatio
 default_config = {
     "max_length": 50,
     "batch_size": 24,
-    "epochs": 4,
+    "epochs": 0,
     "lr": 1e-7
 }
 
@@ -105,3 +106,25 @@ for e in range(EPOCHS):
         if i % 10 == 0:
             wandb.log({"loss": outputs.loss})
 
+def attempt(model, tokenizer):
+    while True:
+        # get input
+        src = input("src: ")
+        tgt = input("tgt: ")
+        # concat
+        input_concat = src+"<mask>"+tgt
+
+        # tokenize and predict
+        input_tensor = tokenizer(input_concat, return_tensors="pt", padding=True, truncation=True, max_length=MAX_LENGTH).to(DEVICE)
+        outputs = model(**input_tensor)
+
+        # print
+        print(f"The model claims: {round(outputs.logits.cpu().item(), 4)}")
+
+# Save model
+os.mkdir(f"./models/{project.name}")
+model.save_pretrained(f"./models/{project.name}/model")
+tokenizer.save_pretrained(f"./models/{project.name}/tokenizer")
+
+# Break
+attempt(model, tokenizer)
