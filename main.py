@@ -19,7 +19,7 @@ default_config = {
     "max_length": 50,
     "batch_size": 24,
     "epochs": 4,
-    "lr": 1e-6
+    "lr": 1e-7
 }
 
 project = wandb.init(project="multisimplify", entity="jemoka", config=default_config)
