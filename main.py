@@ -19,7 +19,7 @@ from transformers import BartConfig, BartTokenizer, BartForSequenceClassificatio
 default_config = {
     "max_length": 50,
     "batch_size": 24,
-    "epochs": 0,
+    "epochs": 4,
     "lr": 1e-7
 }
 
